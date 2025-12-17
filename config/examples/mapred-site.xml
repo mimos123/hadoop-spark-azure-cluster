@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  MapReduce Configuration
+  File: mapred-site.xml
+  Location: $HADOOP_HOME/etc/hadoop/
+  
+  This file contains MapReduce-specific configuration.
+  Memory settings should be adjusted based on available YARN resources.
+-->
+<configuration>
+    <!-- MapReduce Framework -->
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+        <description>
+            Execution framework for MapReduce.
+            Must be 'yarn' for Hadoop 3.x
+        </description>
+    </property>
+
+    <!-- MapReduce Application Classpath -->
+    <property>
+        <name>mapreduce.application.classpath</name>
+        <value>$HADOOP_HOME/share/hadoop/mapreduce/*:$HADOOP_HOME/share/hadoop/mapreduce/lib/*</value>
+        <description>
+            Classpath for MapReduce applications.
+            Adjust $HADOOP_HOME to your actual Hadoop installation path.
+        </description>
+    </property>
+
+    <!-- ApplicationMaster Memory -->
+    <property>
+        <name>yarn.app.mapreduce.am.resource.mb</name>
+        <value>512</value>
+        <description>
+            Memory for the MapReduce ApplicationMaster.
+            
+            For 4GB VM: 512 MB
+            For 8GB VM: 1024 MB
+            
+            ApplicationMaster coordinates the MapReduce job.
+        </description>
+    </property>
+
+    <!-- ApplicationMaster JVM Heap -->
+    <property>
+        <name>yarn.app.mapreduce.am.command-opts</name>
+        <value>-Xmx410m</value>
+        <description>
+            JVM options for ApplicationMaster.
+            Should be ~80% of yarn.app.mapreduce.am.resource.mb
+        </description>
+    </property>
+
+    <!-- Map Task Memory -->
+    <property>
+        <name>mapreduce.map.memory.mb</name>
+        <value>512</value>
+        <description>
+            Memory allocation for Map tasks.
+            
+            For 4GB VM: 512 MB
+            For 8GB VM: 1024 MB
+            
+            Adjust based on your data size and available memory.
+        </description>
+    </property>
+
+    <!-- Map Task JVM Heap -->
+    <property>
+        <name>mapreduce.map.java.opts</name>
+        <value>-Xmx410m</value>
+        <description>
+            JVM heap size for Map tasks.
+            Should be ~80% of mapreduce.map.memory.mb
+        </description>
+    </property>
+
+    <!-- Reduce Task Memory -->
+    <property>
+        <name>mapreduce.reduce.memory.mb</name>
+        <value>512</value>
+        <description>
+            Memory allocation for Reduce tasks.
+            
+            For 4GB VM: 512 MB
+            For 8GB VM: 1024 MB
+            
+            Typically same as or 2x map memory due to sort/merge operations.
+        </description>
+    </property>
+
+    <!-- Reduce Task JVM Heap -->
+    <property>
+        <name>mapreduce.reduce.java.opts</name>
+        <value>-Xmx410m</value>
+        <description>
+            JVM heap size for Reduce tasks.
+            Should be ~80% of mapreduce.reduce.memory.mb
+        </description>
+    </property>
+
+    <!-- Map Output Compression -->
+    <property>
+        <name>mapreduce.map.output.compress</name>
+        <value>true</value>
+        <description>
+            Compress map output to reduce network I/O during shuffle.
+            Highly recommended for better performance.
+        </description>
+    </property>
+
+    <!-- Map Output Compression Codec -->
+    <property>
+        <name>mapreduce.map.output.compress.codec</name>
+        <value>org.apache.hadoop.io.compress.SnappyCodec</value>
+        <description>
+            Compression codec for map output.
+            Snappy: Fast compression/decompression (recommended)
+            LZ4: Even faster but less compression
+            GZip: Better compression but slower
+        </description>
+    </property>
+
+    <!-- Sort Buffer Size -->
+    <property>
+        <name>mapreduce.task.io.sort.mb</name>
+        <value>200</value>
+        <description>
+            Memory buffer for sorting map output.
+            Larger values improve performance but use more memory.
+            Should be less than Map task memory.
+        </description>
+    </property>
+
+    <!-- Sort Factor -->
+    <property>
+        <name>mapreduce.task.io.sort.factor</name>
+        <value>50</value>
+        <description>
+            Number of streams to merge at once during sorting.
+            Higher values = fewer merge passes = better performance
+            But also more file handles open at once.
+        </description>
+    </property>
+
+    <!-- Reduce Shuffle Parallelcopies -->
+    <property>
+        <name>mapreduce.reduce.shuffle.parallelcopies</name>
+        <value>10</value>
+        <description>
+            Number of parallel transfers during shuffle.
+            Higher values improve shuffle performance.
+        </description>
+    </property>
+
+    <!-- Job History Server -->
+    <property>
+        <name>mapreduce.jobhistory.address</name>
+        <value>m-1:10020</value>
+        <description>
+            MapReduce Job History Server IPC address.
+            Optional - only if you run History Server separately.
+        </description>
+    </property>
+
+    <property>
+        <name>mapreduce.jobhistory.webapp.address</name>
+        <value>m-1:19888</value>
+        <description>
+            MapReduce Job History Server web UI address.
+            Optional - only if you run History Server separately.
+        </description>
+    </property>
+
+    <!-- Speculative Execution -->
+    <property>
+        <name>mapreduce.map.speculative</name>
+        <value>false</value>
+        <description>
+            Enable speculative execution for map tasks.
+            Runs duplicate tasks if some are slow.
+            Disable for small clusters to save resources.
+        </description>
+    </property>
+
+    <property>
+        <name>mapreduce.reduce.speculative</name>
+        <value>false</value>
+        <description>
+            Enable speculative execution for reduce tasks.
+            Usually disabled as reduces are harder to speculate.
+        </description>
+    </property>
+</configuration>
