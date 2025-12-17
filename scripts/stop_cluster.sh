@@ -36,7 +36,7 @@ print_header() {
 }
 
 # Check if running on master node
-if [[ ! "$(hostname)" == "m-1" ]]; then
+if [[ "$(hostname)" != "m-1" ]]; then
     print_warning "This script should be run on the master node (m-1)"
     print_info "Current hostname: $(hostname)"
     read -p "Continue anyway? (y/N) " -n 1 -r

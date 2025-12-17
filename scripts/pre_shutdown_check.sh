@@ -82,7 +82,7 @@ else
     
     # Check for missing blocks
     MISSING_BLOCKS=$(hdfs dfsadmin -report 2>/dev/null | grep "Missing blocks" | awk '{print $3}')
-    if [[ "$MISSING_BLOCKS" -eq 0 ]] 2>/dev/null; then
+    if [[ -n "$MISSING_BLOCKS" ]] && [[ "$MISSING_BLOCKS" -eq 0 ]]; then
         print_success "No missing blocks"
     else
         print_error "Missing blocks detected: $MISSING_BLOCKS"
@@ -92,7 +92,7 @@ else
     
     # Check under-replicated blocks
     UNDER_REP=$(hdfs dfsadmin -report 2>/dev/null | grep "Under replicated blocks" | awk '{print $4}')
-    if [[ "$UNDER_REP" -eq 0 ]] 2>/dev/null; then
+    if [[ -n "$UNDER_REP" ]] && [[ "$UNDER_REP" -eq 0 ]]; then
         print_success "No under-replicated blocks"
     else
         print_warning "Under-replicated blocks: $UNDER_REP"

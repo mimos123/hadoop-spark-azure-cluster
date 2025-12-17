@@ -239,13 +239,13 @@ if ! jps | grep -q "ResourceManager"; then
 fi
 
 LIVE_NODES=$(hdfs dfsadmin -report 2>/dev/null | grep "Live datanodes" | awk '{print $3}' | sed 's/://g')
-if [[ "$LIVE_NODES" -lt 2 ]] 2>/dev/null; then
+if [[ -n "$LIVE_NODES" ]] && [[ "$LIVE_NODES" -lt 2 ]]; then
     print_warning "Not all DataNodes are active ($LIVE_NODES/2)"
     ALL_OK=false
 fi
 
 ACTIVE_NODES=$(yarn node -list 2>/dev/null | grep "RUNNING" | wc -l)
-if [[ "$ACTIVE_NODES" -lt 2 ]] 2>/dev/null; then
+if [[ -n "$ACTIVE_NODES" ]] && [[ "$ACTIVE_NODES" -lt 2 ]]; then
     print_warning "Not all NodeManagers are active ($ACTIVE_NODES/2)"
     ALL_OK=false
 fi
