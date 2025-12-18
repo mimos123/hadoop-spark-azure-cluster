@@ -241,9 +241,9 @@ Access these web interfaces from your browser (replace `<m-1-ip>` with your mast
 
 | Service | URL | Port | What You'll See |
 |---------|-----|------|-----------------|
-| **HDFS NameNode** | http://`<m-1-ip>`:9870 | 9870 | Cluster overview, live nodes, storage capacity |
+| **HDFS NameNode** | http://`<m-1-ip>`:9870 or 50070 | 9870 or 50070 | Cluster overview, live nodes, storage capacity |
 | **YARN ResourceManager** | http://`<m-1-ip>`:8088 | 8088 | Running applications, cluster metrics, nodes |
-| **Spark History Server** | http://`<m-1-ip>`:18080 | 18080 | Completed Spark applications, stages, jobs |
+| **Spark History Server** | http://`<m-1-ip>`:4040 | 4040 | Completed Spark applications, stages, jobs |
 | **YARN NodeManager (m-1)** | http://`<m-1-ip>`:8042 | 8042 | Node details, containers, logs |
 | **YARN NodeManager (m-2)** | http://`<m-2-ip>`:8042 | 8042 | Node details, containers, logs |
 
