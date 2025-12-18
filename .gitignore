@@ -1,0 +1,25 @@
+# Hadoop
+logs/
+*.log
+*.pid
+/tmp/
+hadoop-*.tar.gz
+spark-*.tgz
+
+# Java
+*.class
+*.jar
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Azure
+*.pem
+*.key

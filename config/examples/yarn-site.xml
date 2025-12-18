@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  YARN Configuration
+  File: yarn-site.xml
+  Location: $HADOOP_HOME/etc/hadoop/
+  
+  This file contains YARN resource management configuration.
+  Memory settings should be adjusted based on your VM size.
+-->
+<configuration>
+    <!-- ResourceManager Hostname -->
+    <property>
+        <name>yarn.resourcemanager.hostname</name>
+        <value>m-1</value>
+        <description>
+            Hostname of the ResourceManager.
+            Replace with your master node hostname.
+        </description>
+    </property>
+
+    <!-- ResourceManager Address -->
+    <property>
+        <name>yarn.resourcemanager.address</name>
+        <value>m-1:8032</value>
+        <description>ResourceManager IPC address</description>
+    </property>
+
+    <!-- ResourceManager Scheduler Address -->
+    <property>
+        <name>yarn.resourcemanager.scheduler.address</name>
+        <value>m-1:8030</value>
+        <description>ResourceManager scheduler address</description>
+    </property>
+
+    <!-- ResourceManager Resource Tracker Address -->
+    <property>
+        <name>yarn.resourcemanager.resource-tracker.address</name>
+        <value>m-1:8031</value>
+        <description>ResourceManager resource tracker address</description>
+    </property>
+
+    <!-- ResourceManager Web UI Address -->
+    <property>
+        <name>yarn.resourcemanager.webapp.address</name>
+        <value>m-1:8088</value>
+        <description>
+            ResourceManager web UI address.
+            Access at: http://m-1:8088
+        </description>
+    </property>
+
+    <!-- Auxiliary Services -->
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+        <description>
+            Shuffle service for MapReduce.
+            Required for MapReduce to work with YARN.
+        </description>
+    </property>
+
+    <!-- NodeManager Memory -->
+    <property>
+        <name>yarn.nodemanager.resource.memory-mb</name>
+        <value>3072</value>
+        <description>
+            Total physical memory (in MB) to be made available to running containers.
+            
+            ⚠️ IMPORTANT: Adjust this value based on your VM size!
+            
+            For 4GB VM (Standard_B2s):
+              Total RAM: 4096 MB
+              OS Reserve: 1024 MB
+              YARN Available: 3072 MB (use this value)
+            
+            For 8GB VM (Standard_D2s_v3):
+              Total RAM: 8192 MB
+              OS Reserve: 2048 MB
+              YARN Available: 6144 MB (change to 6144)
+            
+            For 16GB VM:
+              Total RAM: 16384 MB
+              OS Reserve: 2048 MB
+              YARN Available: 14336 MB (change to 14336)
+            
+            Using incorrect values will cause container launch failures!
+        </description>
+    </property>
+
+    <!-- Maximum Container Memory -->
+    <property>
+        <name>yarn.scheduler.maximum-allocation-mb</name>
+        <value>3072</value>
+        <description>
+            Maximum memory that can be allocated for a single container.
+            Should match yarn.nodemanager.resource.memory-mb
+        </description>
+    </property>
+
+    <!-- Minimum Container Memory -->
+    <property>
+        <name>yarn.scheduler.minimum-allocation-mb</name>
+        <value>512</value>
+        <description>
+            Minimum memory that can be allocated for a container.
+        </description>
+    </property>
+
+    <!-- NodeManager CPU Cores -->
+    <property>
+        <name>yarn.nodemanager.resource.cpu-vcores</name>
+        <value>2</value>
+        <description>
+            Number of CPU cores available to YARN on each node.
+            For Standard_B2s: 2
+            For Standard_D2s_v3: 2
+        </description>
+    </property>
+
+    <!-- Physical Memory Check -->
+    <property>
+        <name>yarn.nodemanager.pmem-check-enabled</name>
+        <value>true</value>
+        <description>
+            Whether to check and enforce physical memory limits.
+            Set to false if containers are killed due to memory overruns.
+            Not recommended for production.
+        </description>
+    </property>
+
+    <!-- Virtual Memory Check -->
+    <property>
+        <name>yarn.nodemanager.vmem-check-enabled</name>
+        <value>false</value>
+        <description>
+            Whether to check and enforce virtual memory limits.
+            Often disabled as virtual memory usage can be unpredictable.
+        </description>
+    </property>
+
+    <!-- Virtual to Physical Memory Ratio -->
+    <property>
+        <name>yarn.nodemanager.vmem-pmem-ratio</name>
+        <value>2.1</value>
+        <description>
+            Ratio between virtual memory and physical memory.
+            Containers can use up to 2.1x their physical memory allocation
+            in virtual memory. Increase if containers are killed for vmem.
+        </description>
+    </property>
+
+    <!-- Log Aggregation -->
+    <property>
+        <name>yarn.log-aggregation-enable</name>
+        <value>true</value>
+        <description>
+            Enable log aggregation. Logs from all containers will be
+            aggregated and stored in HDFS after application completes.
+        </description>
+    </property>
+
+    <!-- NodeManager Local Directories -->
+    <property>
+        <name>yarn.nodemanager.local-dirs</name>
+        <value>/home/hadoop/hadoop/tmp/nm-local-dir</value>
+        <description>
+            Local directories for NodeManager intermediate data.
+            Can specify multiple directories separated by commas.
+        </description>
+    </property>
+
+    <!-- NodeManager Log Directories -->
+    <property>
+        <name>yarn.nodemanager.log-dirs</name>
+        <value>/home/hadoop/hadoop/logs/userlogs</value>
+        <description>
+            Local directories where NodeManager stores container logs.
+        </description>
+    </property>
+
+    <!-- Application History -->
+    <property>
+        <name>yarn.timeline-service.enabled</name>
+        <value>false</value>
+        <description>
+            Enable Timeline Service for application history.
+            Set to true if you need detailed application history.
+        </description>
+    </property>
+</configuration>
